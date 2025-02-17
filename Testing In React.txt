@@ -73,3 +73,27 @@ RTL will not care if we add 4+4 or 5+3 to display the number 8, As long as the f
 
 It is a piece of code to test the software code. The piece of code basically just throws an error when actual output does not match the expected output. EX :: let say we have index.js file 
 
+const getFullName= (fname, lname)=>{
+    return `${fname} ${lname}`
+}
+
+const actualName = getFullName("bruce", "wayne)
+const expectedName = "bruce wayne"
+
+if(actualName !== expectedName){
+    throw new Error(actualName is not equal to expectedName)
+}
+
+Here if we run the above code we will not get any error but if expectedName= "aman bisht", Then we will get an error as actual output is not same as expected which is "bruce wayne" != "aman bisht". Here this ::
+
+if(actualName !== expectedName){
+    throw new Error(actualName is not equal to expectedName)
+}
+
+above code is my "TEST" code that will pass when output is correct and provide meaningful feedback when it is not. 
+
+
+####### PACKAGES ######
+
+Here we create our react app using create-react-app the jest and RTL is automatically added as a dependency in it, The packages are "@testing-library/dom", "@testing-library/jest-dom", "@testing-library/react", "@testing-library/user-event" and "jest" which is present in package.json of react-script 
+
