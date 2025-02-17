@@ -1,0 +1,75 @@
+####### TESTING #######
+
+As a developer our primary goal is to build software (like website, social media app etc) that works, If it does not then it does not matter how much effort we put in ui/ux and performance. To ensure our software works, we test the application and check if our software work as expected, For this we rely on 2 type of testing ::
+
+1. MANUAL TESTING => An individual like tester and quality assurance (qa) team will interact with the software and ensure everything works as intended. If a new feature is released the same steps repeat, However depending on what a feature is we may have to test not only the new feautre but also the existing feautres to ensure app as a whole continue to work. Drawbacks :: 
+
+(a). Time consuming as depending on a feature and how large an application is the tester will test the whole application again. 
+
+(b). Complex repeatitive task has a risk of human error. 
+
+(c). Given the tight deadline we may not get a chance to test all the features we should. 
+
+(d). Sometime leads to shipping software that contain some errors and does not work as intended
+
+Now the solution to above drawbacks is "AUTOMATED TESTING"
+
+2. AUTOMATED TESTING => These are programs that automate the task of testing the software. Basically a code to test the software code. Offcourse additional effort like writing test code are required when we develop a feature but this initial investment will pay-off in a long run. Advantage ::
+
+(a). Not time consuming as the tester is not doing any manual testing as everything is automated by test code. 
+
+(b). Reliable, consistent and not error prone as computer is good at doing complex repeatitive task. 
+
+(c). Easy to identify and fix feature that breaks tests when changes are made to the software code. As a developer we can verify other developer work and ensure that does not break the software.
+
+(d). Gives confidence when shipping software that works as intended
+
+
+###### JEST VS RTL (REACT TESTING LIBRARY) #######
+
+Jest is a javascript testing framework, It is a test runner that finds tests, runs the tests, determines whether the tests passed or failed and reports it back in a human readable manner. 
+
+RTL is a javascript testing utility that provides virtual DOM for testing REACT components, Though the automated test we will be writing there is not actual DOM to work with. RTL provides a virtual DOM which we can use to interact with and verify the behaviour of a react component. 
+
+Here the testing LIBRARY is infact a family of packages which helps test UI components. The core library is called DOM testing library and RTL is simply a wrapper around this core library to test React applications in an easier way. 
+
+FOR TESTING WE WILL BE USING BOTH THE LIBRARY TOGETHER 
+
+
+@@@@@ NOTE @@@@@
+
+Enzyme (Deprecated)
+Enzyme was a React testing utility created by Airbnb that provided more control over component rendering. It allowed shallow, mount, and static rendering to test React components in isolation. However, it is now deprecated and does not support React 18+. React Testing Library is now the preferred choice.
+
+Avoid Enzyme, as it is outdated and does not support newer React versions.
+
+
+###### TYPES OF TESTS #######
+
+There are many types of test but mostly we come across 3 types ::
+
+1. UNIT TEST => Focus on testing the individual building blocks of an application such as a class or a function component. Each unit or building block is tested in isolation independent of other units. Dependencies are mocked, Run in a short amount of time and make it very easy to pinpoint failures. Easier to write and maintain. 
+
+2. INTEGRATION TEST => Focus on testing a combination of units and ensures they work together. Take longer than unit tests.
+
+3. E2E TEST => Focus on testing the entire application flow from the user’s perspective from start to finish. Mimics real user interactions. Involves in a real UI, real backend database, real services etc. Take the longest time as it cover the most amount of code. Have a cost implication as we interact with real APIs that may charge based on the number of requests. 
+
+
+####### TESTING PYRAMID ########
+
+It is a guideline to follow when deciding what type of test we should write for our software. The bulk of the test are unit tests at the bottom of the pyramid, As we go up the pyramid the test gets larger but the number of test get smaller, Then the fewest are e2e test which gives the most confident as it closely resemble a user testing the application. Unit tests are fastest and cheapest, while E2E tests are slow and expensive.
+
+
+######## RTL PHILOSOPHY ########
+
+The more our tests resemble the way our software is used, the more confidence they can give us. Tests we are going to write should strike a balance between unit tests in the sense they are at a component level and easy to write and maintain and E2E tests in the sense they resemble the way a user would interact with the component. 
+
+With RTL we are not concerned about the implementation details of a component. We only care about how the component behaves when a user interacts with it. FOR EX:: 
+
+RTL will not care if we add 4+4 or 5+3 to display the number 8, As long as the final result is 8 it has np. Any refactoring on our software code will not affect our test as long as the end result is same. 
+
+
+###### TEST #######
+
+It is a piece of code to test the software code. The piece of code basically just throws an error when actual output does not match the expected output. EX :: let say we have index.js file 
+
