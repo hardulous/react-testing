@@ -165,4 +165,22 @@ A test suites corresponds to a file which contains test like "Greet.test" and "A
 
 ######### FILENAME CONVENTIONS ##########
 
+Here till now we have created our test using filename ".test.tsx" file but in jest with CRA provide multiple filename conventions to create a test file. ::
+
+1. Files with .test.js, .test.jsx, .test.ts and .test.tsx suffix
+2. Files with .spec.js, .spec.jsx, .spec.ts and .spec.tsx suffix
+3. Files with .js, .jsx, .ts and .tsx suffix in __tests__ folders
+
+Recommendation is to always put your tests next to the code they are testing so that relative imports are shorter. 
+
+Here just like .test(), .only() and .skip() we have it(), fit() and xit() are global functions provided by jest.
+
+1. it() => It is used to define test case similar to .test(). 
+
+2. fit() => fit stands for "focused it" and is used to run only that specific test, ignoring others similar to ".only()".
+
+3. xit() => xit stands for "excluded it" and skips the test similar to ".skip()".
+
+
+###### CODE COVERAGE ########
 
