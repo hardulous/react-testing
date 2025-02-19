@@ -97,3 +97,16 @@ above code is my "TEST" code that will pass when output is correct and provide m
 
 Here we create our react app using create-react-app the jest and RTL is automatically added as a dependency in it, The packages are "@testing-library/dom", "@testing-library/jest-dom", "@testing-library/react", "@testing-library/user-event" and "jest" which is present in package.json of react-script 
 
+
+###### RUNNING FIRST TEST ########
+
+The create-react-app comes with a default "App.test" file which contain a test to run. The test check whether an element that contains the text "learn react" (case insensitive due to /i) exists in the document or not.
+
+To run this test in package.json we have script "test": "react-scripts test", This will internally run jest in watch mode and execute all the test in our application and provide result of it whether passed or not in terminal with message. 
+
+
+####### TEST DRIVEN DEVELOPMENT (TDD) ########
+
+TDD is a software development process where we write tests before writing the software code. Once the tests have been written, We then write the code to ensure the tests pass. This envolves 3 steps ::
+
+1. 
