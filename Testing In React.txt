@@ -109,4 +109,60 @@ To run this test in package.json we have script "test": "react-scripts test", Th
 
 TDD is a software development process where we write tests before writing the software code. Once the tests have been written, We then write the code to ensure the tests pass. This envolves 3 steps ::
 
-1. 
+1. Create tests that verify the functionality of a specific feature
+
+2. Write software code that will run the tests successfully when re-executed
+
+3. Refactor the code for optimization while ensuring the tests continue to pass (Optional)
+
+Also called red-green testing as all tests go from a red failed state to a green passed state.
+
+TO UNDERSTAND MORE WATCH "https://www.youtube.com/watch?v=foiMMI-pEes&list=PLC3y8-rFHvwirqe1KHFCHJ0RqNuN61SJd&index=9"
+
+####### WATCH MODE ########
+
+We we run command "npm run test" behind the scene it runs jest in watch mode. Watch mode is an option that we can pass to jest asking to watch files that have changed since the last commit and execute tests related only to those changed files. It is an optimization designed to make your tests run fast regardless of how many tests we have. 
+
+Let say we have 2 test greet.test and app.test now initially both test case will run when we do "npm run test", After that if we make changes to only greet component which is getting test in greet.test then only that test file will run again and app.test will not. 
+
+
+######## FILTERING TESTS #########
+
+Here when we run "npm run test" under the watch usage we have multiple filtering option allow us to to run test case in different way like, run all tests, run only failed tests, filter test by a fileName regex, filter test by a test name regex. They come handy when we want to filter test case in a large codebase.
+
+Apart from filtering there are global method available from jest like test.only() and test.skip().
+
+1. only() => If you want to run only one test (or a few tests) out of many test in a .test file while debugging, use test.only().
+Only the test with test.only() will run, and all other tests in the file will be ignored.
+
+2. skip() => If you want to temporarily disable a test, use test.skip(). Jest marks skipped tests in the output but doesn't run them.
+
+TO UNDERSTAND MODE WATCH "https://www.youtube.com/watch?v=2TkpBziqkRA&list=PLC3y8-rFHvwirqe1KHFCHJ0RqNuN61SJd&index=11"
+
+
+######### GROUPING TESTS ###########
+
+Jest provide us way to organize related tests in group which helps organize tests logically, making them easier to read and maintain. For this jest provide us global method called "describe()". 
+
+describe(name, fn) ::
+
+1. name => Group name.
+
+2. fn => Function that contains the expectations to test.
+
+Here in fn function we put our test case "test(name, fn)" in which actual test defination is present. The describe() also provide .skip() and .only()
+
+If you want to run only one specific test group and ignore all others, use describe.only().
+
+If you want to temporarily disable a group of tests, use describe.skip().
+
+In a single test file we can have multiple describe() block just like multiple test() block. We can have nested describe() block as well.
+
+In terminal window of a test::
+
+A test suites corresponds to a file which contains test like "Greet.test" and "App.test" getting executed by jest in watch mode. Even if we group test together using describe() it does not corresponds to a test suites. 
+
+
+######### FILENAME CONVENTIONS ##########
+
+

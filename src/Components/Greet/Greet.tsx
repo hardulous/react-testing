@@ -1,9 +1,11 @@
-const Greet = () => {
-  return (
-    <div>Hello</div>
-  )
-}
+type GreetProp = {
+  name?: string;
+};
 
-export default Greet
+const Greet: React.FC<GreetProp> = ({ name }) => {
+  return <div>Hello {name}</div>;
+};
 
-// A component for testing whether it renders correctly. 
+export default Greet;
+
+// A component for testing whether it renders correctly.
