@@ -184,3 +184,81 @@ Here just like .test(), .only() and .skip() we have it(), fit() and xit() are gl
 
 ###### CODE COVERAGE ########
 
+It is a metric that can help us understand how much of our software code is tested. It provide us metric like ::
+
+1. Statement coverage => % Stmts – Percentage of statements (lines) covered, How many of the statements in the software code have been executed. 
+
+2. Branch coverage => % Branch – Percentage of conditionals (if/else, switch) covered, How many of the branches of the control structures have been executed. 
+
+3. Function coverage => % Funcs – Percentage of functions covered, How many of the functions defined in the software code have been tested.
+
+4. Line coverage => % Lines – Percentage of actual lines covered, How many of lines of source code have been tested
+
+5. Uncovered Line => Uncovered Line #s – The line numbers missing tests, The Line numbers that were not executed by any test. EX :: If there's an if condition that never gets tested, its lines remain uncovered. If a function is defined but never used in tests, Jest won’t execute it. If you don’t write tests for error cases (e.g., catch blocks), those lines remain uncovered.
+
+Here CRA with jest provide support to request "code coverage report" in HTML format. For this we add new script in package.json " coverage: 'react-scripts test --coverage' ".  
+
+Here running above command will show a table of above metrices as a part of output. The table will be empty if the all test case has already run before and no new commit are present in code, So to watch for all files and not only for changed files we add another flag in script "--watchAll".
+
+Our goal using this table is to turn the red % into green % by writing test case for that file. Here most of the time we don not write test case for "index.tsx" and "reportWebVitals.ts", So we can make jest ignore those files using flag "--collectCoverageFrom". So "--collectCoverageFrom='src/Components/**/*.{ts,tsx}" , It means inside src/Components directory collects coe coverage only from .ts and .tsx files at any subDirectory level **/.
+
+Here in large code base we will have some files that does not need a test case. Let say in Greet folder we have a type defination file Greet.types.ts and we don't want test case for this so we can make jest ignore this file using "--collectCoverageFrom" with "!" sign, --collectCoverageFrom='!src/Components/**/*.types.{ts,tsx}. It means excludes all typeScript type definition files (.types.ts and .types.tsx) from Jest coverage.
+
+Jest also allows us to set coverage thresholds, ensuring that your tests cover a minimum percentage of statements, branches, functions, and lines. If coverage falls below the set threshold, Jest will fail the test run. For this add in package.json ::  
+
+ "jest":{
+   "coverageThreshold":{
+     "global":{
+        "branches":80
+        "functions":80
+        "lines":80
+        "statements":-10
+     }
+   } 
+  }
+
+Here above config state jest will fail if there is less that 80% coverage in all metrics and if more than 10 uncovered statements. 
+
+To understand uncovered statement add a branch (if/else) logic in Greet.tsx
+
+Using coverage jest also create a coverage report under coverage directory in "index.html" which is in ui friendly manner. It is not necessary to always reach 100% coverage as 80% coverage is also good. 
+
+
+####### ASSERTIONS ########
+
+Assertions in Jest help validate expected outputs in test cases. They check if a function returns the expected value or if certain conditions hold true. EX ::
+
+In Greet component test case we are asserting if the word "Hello" exists in virtual DOM. 
+
+Assertions decide if a test passes or fails. Parts of assertions ::
+
+1. expect(value) => In jest assertions are carried out using global expect() which takes argument value that your code produces. In our ex it is a DOM node that contain "Hello" word, Most of the time we will use expect along with a "matcher" function to assert something about a value. A matcher can optionally accept an argument which is the correct expected value. In our ex the matcher is "toBeInTheDocument()" that verify whether DOM node exists in DOM or not. 
+
+As a beginner we should know about those matcher functions to be used with expect(), For this go to jest docs "https://jestjs.io/docs/using-matchers"
+
+Here jest provide matcher functions for js testing only that does not inlcide ui and DOM so in above docs we will not see "toBeInTheDocument()" matcher, For this we use additional package called "jest-dom" which contain matcher to assert against UI element and DOM. "https://github.com/testing-library/jest-dom" 
+
+Here CRA automaitcally installed all these packages for us and config them as well. In "setupTests.ts" we will see the "jest-dom" package is imported in it, The purpose of this file is to be executed and configure the testing environment before any tests run by jest. 
+
+
+######### WHAT TO TEST ###########
+
+In an react application we should test following things ::
+
+1. Test if component renders without any error 
+
+2. Test if component renders correctly when passed a set of props without any error 
+
+3. Test if component renders correctly in different states, EX :: if we have a navbar the logged in button should be visible if user is logged out and not visible if user is logged in.  
+
+4. Test if components reacts to events, This is applicable to components like button and form controls which allow user interaction. 
+
+These above are the basic test case we should do and there are more advance test case also. 
+
+What not to test ::
+
+1. Implementation details, The test case should be around how the software will be used and not how software is implemented 
+
+2. Third party code, We should test the code we have written and not the code we are consuming from external package, EX :: If we are using mui we should not test their component as they are already well tested but test the component that are using the mui components. 
+
+3. Code that is not important from a user point of view, EX :: We have written a utility function that display date in user friendly format, We don't have to test whether component is calling that function but test if that function returns the date in expected format or not. 

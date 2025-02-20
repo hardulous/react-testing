@@ -3,7 +3,7 @@ import Greet from "./Greet";
 
 test("Greet renders correctly", () => {
   render(<Greet />); // Creating virtual DOM of component we want to test
-  const textEle = screen.getByText("Hello"); // Checking in virtual DOM whether link with name "hello" exist or not
+  const textEle = screen.getByText(/Hello/); // Checking in virtual DOM whether link with name "hello" exist or not
   expect(textEle).toBeInTheDocument(); // Here testing the assertion whether "hello" link exist in DOM or not
 });
 
@@ -22,7 +22,7 @@ Now if we change the test name from "Hello" to "hello" and run the test we will 
 describe("Greet Test", () => {
   test("Greet test-1", () => {
     render(<Greet />);
-    const textEle = screen.getByText("Hello");
+    const textEle = screen.getByText(/Hello/);
     expect(textEle).toBeInTheDocument();
   });
 
@@ -32,12 +32,15 @@ describe("Greet Test", () => {
   //   expect(textEle).toBeInTheDocument();
   // });
 
-  // Here the describe() can be nested as well
-  describe("Nested Greet Test", () => {
-    test("Greet test-2", () => {
-      render(<Greet name="aman" />);
-      const textEle = screen.getByText("Hello aman");
-      expect(textEle).toBeInTheDocument();
-    });
-  });
+  // Here the describe() can be nested as well. Comment this code to understand uncovered branch test case. 
+
+  // describe("Nested Greet Test", () => {
+  //   test("Greet test-2", () => {
+  //     render(<Greet name="aman" />);
+  //     const textEle = screen.getByText("Hello aman");
+  //     expect(textEle).toBeInTheDocument();
+  //   });
+  // });
 });
+
+// 
