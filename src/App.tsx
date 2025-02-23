@@ -1,6 +1,7 @@
-import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Application from './Components/Application/Application';
+import Skills from './Components/Skills/Skills';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           Learn React
         </a>
       </header>
+      <Application/>
+      <Skills skills={["Next.js","React.js","Node.js","Express","MongoDB"]}/>
     </div>
   );
 }

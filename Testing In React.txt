@@ -262,3 +262,77 @@ What not to test ::
 2. Third party code, We should test the code we have written and not the code we are consuming from external package, EX :: If we are using mui we should not test their component as they are already well tested but test the component that are using the mui components. 
 
 3. Code that is not important from a user point of view, EX :: We have written a utility function that display date in user friendly format, We don't have to test whether component is calling that function but test if that function returns the date in expected format or not. 
+
+
+######### RTL QUERIES #########
+
+Every test we write generally involves the following steps ::
+
+1. Render the component
+2. Find an element rendered by the component 
+3. Assert against the element found in step 2 which will pass or fail the test
+
+To render the component, We use the render method from RTL, For assertion we use expect() passing in a value and combine it with a matcher function from jest or jest-dom.
+
+Here finding the element inside the component getting renderd for testing is actually RTL responsibility for which it provides API called RTL QUERIES. 
+
+Queries are the methods that RTL provides to find elements on the page or component. 
+
+1. To find a single element on the page, we have : getBy*, queryBy* and findBy*
+
+2. To find multiple element on the page, we have : getAllBy*, queryAllBy* and findAllBy*
+
+Here the meaning of * is each of these methods need to be combined with a suffix to form the actual query. This * can be : Role, LabelTest, PlaceHolderTest, Text, DisplayValue, AltText, Title and TestId.
+
+1. getBy* => The getBy queries are used to find a single matching element in the DOM. It throws an error if no element is found or if more than one match is found. 
+
+ (a). getByRole(role, options) => Finds element by ARIA-ROLE, Here ARIA (Accessible rich internet application) provides semantic meaning to content to ensure people using assistive technologies like screen readers etc are able to use them. 
+
+ By default, many semantic elements in HTML have a role. EX:: Button element has a button role, anchor element has a link role, h1 to h6 elements have a heading role, checkboxes have a checkbox role etc. But there are some elements that do not have a role so we can specify role to them using "role" attribute EX ::
+
+ To use an anchor element as a button in the navbar we can add " role = 'button' ".
+
+ Now we will test the Application.tsx component using getByRole() in Application.test.tsx file. 
+
+ Here getByRole("html element role", options) also accept options argument to help refine the search. These options allow filtering elements based on text content, accessibility attributes, levels, and more at "https://testing-library.com/docs/queries/byrole/#options"
+
+ The getByRole() should be the top priority for querying the component, If for some reason it does not work with the component code then we can make use of other queries. 
+
+ (b). getByLabelText(label, option) => It is used to find form elements (<input>, <textarea>, <select>, etc.) associated with a <label>. It ensures accessibility by querying elements based on their label text. 
+
+ (c). getByPlaceholderText(label, option) => It is used to find form elements (<input>, <textarea>) based on their placeholder attribute.
+
+ (d). getByText(text, options) => The getByText() query is used to find elements by their text content. It is useful for testing headings, paragraphs, buttons, and any other text-based elements or typography components. 
+
+ (e). getByDisplayValue(value, options) => It is used to find form elements (<input>, <textarea>, <select>) based on their current value.
+
+ (f). getByAltText(altText, options) => It is used to find elements like (<img>, <input>, <area>) or elements with an alt attribute based on their alt text. 
+
+ (g). getByTitle(title, options) => It is used to find elements that have a title attribute. This is useful when testing icons, tooltips, or elements with accessibility titles.
+
+ (h). getByTestId(testId) => It is used to find element by their data-testid attribute. This is useful when no accessible roles or text-based queries (like getByRole or getByText) are suitable.
+
+
+######### PRIORITY ORDER FOR QUERIES ##########
+
+The order of priority for when to use which query method is based on principle of "Your test should resemble how users interact with your code (component, page, etc.) as much possible". 
+
+"getByRole" (Top preference for query element) -> "getByLabelText" (Good for testing form field) -> "getByPlaceholderText" (Best for inputs with a placeholder only and no label available) -> "getByText" (Outside form text content is main way user find the elements, useful to find non-interactive element like div, span etc) -> "getByDisplayValue" (Useful to deal with form element with some pre-filled values) 
+
+Almost every test we write should make use of above 5 query methods, If still having proble finding element then 1st take a look at the component code, If still can not make it work then use final 2 query methods.
+
+"getByAltText" (If the element support alt attribute) -> "getByTitle" (To find element with title attribute, Best for tooltips). But there is a caveat with these 2 methods as user experince of interacting with these 2 attribute varies across browsers and assistive technologies like screen readers, Ex title attribute is not consistently read by screen readers and not visible by default for cited users. 
+
+If none of these 7 methods work then our last resort is :
+
+getByTestId (The user cannot see or hear. It should only be used when no other queries work. EX: When text is dynamic)
+
+
+######## QUERY MULTIPLE ELEMENTS ##########
+
+Here sometime we come across a scenario where we have to find multiple elements inside the DOM. For this purpose RTL provide "getAllBy*" query. 
+
+1. getAllBy* => It works just like getBy queries but return array of multiple matching elements instead of just one. If no elements match, it throw an error.
+
+Every getBy* query like getByRole, getByLabelText etc have a corresponding getAllBy* query like getAllByRole, getAllByLabelText etc.
+
