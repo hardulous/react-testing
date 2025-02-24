@@ -336,3 +336,38 @@ Here sometime we come across a scenario where we have to find multiple elements 
 
 Every getBy* query like getByRole, getByLabelText etc have a corresponding getAllBy* query like getAllByRole, getAllByLabelText etc.
 
+
+####### findBy* and findAllBy* ########
+
+So far we have query like : To assert if elements are present in the DOM we use "getBy*" and "getAllBy*". To assert if elements are not present in the DOM we use "queryBy*" and "queryAllBy*"
+
+But we have 3rd case where if elements are not present in the DOM at begining but make their way into the DOM after some point in time in future, EX : data that is fetched from a server will be rendered only after a few ms, State change or re-rendering after user interaction like onChange onClick etc, Ofc data that is rendered initially might also disappear after some time. 
+
+For this above case where we are working with asyncronous code we use "findBy*" and "findAllBy*". 
+
+ (a). findBy* => Returns a promise which resolves when an element is found based on query match. The promise is rejected if not element is found or if more than one element is found after a default timeout of 1000ms 
+
+ (b). Returns a promise which resolves to an array of elements when any elements are found based on query match. The promise is rejected if no elements are found after a default timeout of 1000ms 
+
+Here all the suffix like role, labelText, title etc that works with getBy*, getAllBy*, queryBy*, queryAllBy* can be applied to findBy* and findAllBy* as well. 
+
+####### MANUAL QUERIES #########
+
+Here to query the virtual DOM RTL provide 3 types of queries : getBy* and getAllBy*, queryBy* and queryAllBy*, findBy* and findAllBy*. 
+
+But it is also possible to write manual queries. Manual queries refer to directly querying the virtual DOM instead of using RTL's built-in query functions. We can use the regular "querySelector" DOM API to find elements from the virtual DOM.
+
+Well this will work but using manual queries to find DOM elements by class, id etc is not recommended because those attributes are invisible to the user. We should always query using the built-in method RTL provides. 
+
+
+######### DEBUGGING #########
+
+Similar to application code sometimes the test we write does not work the way we expect. Debugging is what will help us in such situation. Here debug a test means getting the idea or view of virtual DOM that can help us understand why the test case or assertion fails. 
+
+Although good thing about RTL is whenever there is any error in test case it provides a meaningful error message along with state of DOM tree created using render method in the terminal. 
+
+For this we have screen.debug() and logRoles()
+
+
+######### 
+
