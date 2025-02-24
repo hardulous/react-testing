@@ -336,3 +336,40 @@ Here sometime we come across a scenario where we have to find multiple elements 
 
 Every getBy* query like getByRole, getByLabelText etc have a corresponding getAllBy* query like getAllByRole, getAllByLabelText etc.
 
+
+######## TextMatch ###########
+
+Here so far we have used query like "screen.getByRole("button)", "screen.getByText("hello")" etc. Now every query method taking value of type "string" as 1st argument but it is not. Infact the type of 1st argument is something called "textMatch" ::
+
+A textMatch is a type like "string", "regex" and "functon" we can pass to query method to find element from virtual DOM. 
+
+Let say we have a " <div>Hello World</div> " in the DOM we want to get it for testing ::
+
+1. textMatch (string) =>  screen.getByText("Hello World") , But here the string we passed here and the one in DOM must be exact same otherwise get error. To match substring, partial match and ignore case we can do "screen.getByText("ello World", {exact: false})" and "screen.getByText("hello world",{exact: false})" 
+
+2. textMatch (regex) => Now to get the above div element instead of string we can also pass the regex as a 1st argument on query methods. Match the string using pattern of regex "screen.getByText(/World/i)" here this will match substring World and ignore case as well. 
+
+3. textMatch (func) => (content?: string, element?: Element | null) => boolean, Here the function receives the text content of each element and if function return true then query returns that element. " screen.getByText((content)=> content.startWith('Hello')) " , Here returns that element who's inner text start with 'Hello'. 
+
+This textMatch is applicable to all "getBy*" and "getAllBy*" class of queries. We most of the time use it with "getByText()" as matching an entire paragraph of text with a full text match is not optimal. 
+
+
+####### queryBy* and queryAllBy* #########
+
+Here similar to getBy* and getAllBy* class of queries and are also used to return a single element but return null or empty [] (in case of queryAllBy*) if not found, without throwing an error unlike getBy* and getAllBy* throws error if no elements are found. Throws an error only if multiple elements are found based on query. 
+
+We use queryBy* and queryAllBy* when ::
+
+ (a). To check if an element does NOT exist (since getBy throws an error if no match is found).
+
+ (b). Avoiding test failures when elements are expected to disappear.
+
+ (c). Handling optional elements that may or may not be in the DOM.
+
+
+Here whatever suffix we have used with getBy* and getAllBy* like role, labelText, text, testId etc. can be used with queryBy* and queryAllBy* as well and functionality of suffix will remain same. But only will not throw error if element not found. 
+
+
+########## findBy* and findAllBy* ############
+
+
