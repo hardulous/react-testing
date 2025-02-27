@@ -403,5 +403,13 @@ Although good thing about RTL is whenever there is any error in test case it pro
 For this we have screen.debug() and logRoles()
 
 
-######### 
+######### TESTING PLAYGROUND ###########
 
+It is a chrome extension that help us find the best queries to select elements when working with RTL. It allow us to inspect elements hierarchy in the DOM and provides suggestions on how to select them while encouraging good testing practice. 
+
+TO LEARN MORE WATCH VIDEO "https://www.youtube.com/watch?v=424C8ppfzQA&list=PLC3y8-rFHvwirqe1KHFCHJ0RqNuN61SJd&index=34"
+
+
+######### USER INTERACTIONS ##########
+
+Every application has user interaction EX: mouse onClick and keyboard onChange etc. 
