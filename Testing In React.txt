@@ -337,6 +337,39 @@ Here sometime we come across a scenario where we have to find multiple elements 
 Every getBy* query like getByRole, getByLabelText etc have a corresponding getAllBy* query like getAllByRole, getAllByLabelText etc.
 
 
+######## TextMatch ###########
+
+Here so far we have used query like "screen.getByRole("button)", "screen.getByText("hello")" etc. Now every query method taking value of type "string" as 1st argument but it is not. Infact the type of 1st argument is something called "textMatch" ::
+
+A textMatch is a type like "string", "regex" and "functon" we can pass to query method to find element from virtual DOM. 
+
+Let say we have a " <div>Hello World</div> " in the DOM we want to get it for testing ::
+
+1. textMatch (string) =>  screen.getByText("Hello World") , But here the string we passed here and the one in DOM must be exact same otherwise get error. To match substring, partial match and ignore case we can do "screen.getByText("ello World", {exact: false})" and "screen.getByText("hello world",{exact: false})" 
+
+2. textMatch (regex) => Now to get the above div element instead of string we can also pass the regex as a 1st argument on query methods. Match the string using pattern of regex "screen.getByText(/World/i)" here this will match substring World and ignore case as well. 
+
+3. textMatch (func) => (content?: string, element?: Element | null) => boolean, Here the function receives the text content of each element and if function return true then query returns that element. " screen.getByText((content)=> content.startWith('Hello')) " , Here returns that element who's inner text start with 'Hello'. 
+
+This textMatch is applicable to all "getBy*" and "getAllBy*" class of queries. We most of the time use it with "getByText()" as matching an entire paragraph of text with a full text match is not optimal. 
+
+
+####### queryBy* and queryAllBy* #########
+
+Here similar to getBy* and getAllBy* class of queries and are also used to return a single element but return null or empty [] (in case of queryAllBy*) if not found, without throwing an error unlike getBy* and getAllBy* throws error if no elements are found. Throws an error only if multiple elements are found based on query. 
+
+We use queryBy* and queryAllBy* when ::
+
+ (a). To check if an element does NOT exist (since getBy throws an error if no match is found).
+
+ (b). Avoiding test failures when elements are expected to disappear.
+
+ (c). Handling optional elements that may or may not be in the DOM.
+
+
+Here whatever suffix we have used with getBy* and getAllBy* like role, labelText, text, testId etc. can be used with queryBy* and queryAllBy* as well and functionality of suffix will remain same. But only will not throw error if element not found. 
+
+
 ####### findBy* and findAllBy* ########
 
 So far we have query like : To assert if elements are present in the DOM we use "getBy*" and "getAllBy*". To assert if elements are not present in the DOM we use "queryBy*" and "queryAllBy*"
@@ -350,6 +383,7 @@ For this above case where we are working with asyncronous code we use "findBy*" 
  (b). Returns a promise which resolves to an array of elements when any elements are found based on query match. The promise is rejected if no elements are found after a default timeout of 1000ms 
 
 Here all the suffix like role, labelText, title etc that works with getBy*, getAllBy*, queryBy*, queryAllBy* can be applied to findBy* and findAllBy* as well. 
+
 
 ####### MANUAL QUERIES #########
 
@@ -401,5 +435,44 @@ Apart from convenience API we can also use low level pointer API like ::
  (d). user.pointer([{ keys: "[MouseLeft>]", target: source }, { target: dest }]); => Stimulate the drag and drop interaction where the element source is dragged and dropped in element dest 
 
 Unless we have a use case for using the pointer API it is recommended to rely on convenience API as they are much easier to read and write  
+
+
+########## KEYBOARD INTERACTION ###########
+
+Here it is the user interaction with the app using the keyboard for this "user-events" provide method like ".type(input element, value)" for type event and ".tab()" for stimulating tab press event. Here this .type() and .tab() are not the part of low level api but type() (utility API) and tab() (convenience API).
+
+UTILITY API ::
+
+ (a). clear() => It is used to clear the contents of an input field in test cases. 
+
+ (b). selectOptions() or deselectOptions() => They are used to select or deselect elements in a select drop down or a list box where we can select multiple elements. 
+
+ (c). upload() => It is used to stimulate the user click on input type file and select the file for upload 
+
+Clipboard API ::
+
+ (a). copy() => To copy the current selection
+
+ (b). cut() => To cut the current selection
+
+ (c). paste() => To paste the selected data into the destination 
+
+If none of this api works then we can rely on low-level keyboard API ::
+
+It allows simulating complex keyboard interactions, such as pressing individual keys, holding down keys, and using key combinations like Shift + A.
+
+ (a). user.keyboard("foo") => Stimulate the user press the key f,o,o
+
+ (b). user.keyboard("{Shift>}A{/Shift}") => Stimulate the user press special key like Shift and hold it using > symbol then press letter A and then release the Shift with / symbol 
+
+
+######### PROVIDER ######## 
+
+When testing React components that rely on context providers, Redux stores, or theme providers, you need to wrap them with the required providers inside the test for this we can use options object as a 2n argument in render method which contains wrapper propertry in which we can specify Wrapper component we want to use. 
+
+But to avoid repeation of this specifying wrapper option we can create custom render function that have pre-configured provider for test case 
+
+
+########## CUSTOM HOOKS ##########
 
 

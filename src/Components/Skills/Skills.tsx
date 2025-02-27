@@ -29,7 +29,7 @@ const Skills = (props: SkillsProps) => {
       )
      }
     </>
-  )
-}
+  );
+};
 
-export default Skills
+export default Skills;
