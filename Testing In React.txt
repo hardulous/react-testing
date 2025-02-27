@@ -369,5 +369,37 @@ Although good thing about RTL is whenever there is any error in test case it pro
 For this we have screen.debug() and logRoles()
 
 
-######### 
+######### USER INTERACTION ##########
+
+Every software contains user interaction like onChange, onClick etc. For every such events a code is executed. There should be tests made to ensure interactions are handled correctly in software. 
+
+To test user interaction we use library called ""@testing-library/user-event"". It is a companion library for RTL that stimulates user interactions by dispatching the events that would happen if the interaction took place in the browser. It is the recommended way to test user interactions with RTL
+
+Although we will be using "@testing-library/user-event" most of the time but sometime we come across a code-base which uses another utility called "fireEvent" which is a method from RTL used to dispatch DOM events. 
+
+But we should use "user-event" over "fireEvent" because it stimulates the real user interaction more closely compared to fireEvent just used to dispatch user event. EX ::
+
+When user types into a text box, The element has to be focused, then keyboard and input event are fired and the value on the element are manipulated as they type. As we can see for a simple typing interaction many events are fired and this is something "user-event" stimulates closely.
+
+With CRA "@testing-library/user-event" library comes out of the box in package.json. But minor issue is "user-event" is now version > 14 but CRA comes with v-13 so update it using command "npm install @testing-library/user-event@latest"
+
+
+######## POINTER INTERACTION #########
+
+Any type of user interaction which includes mouse like mouse clicks, right clicks, hover, and dragging etc. Here in Counter.test.tsx the "user.click()" is not a pointer API, It is a convenience API which internally calls the pointer API.
+
+Convenience API is what we use most of time when writing the test cases. Now apart from .click() there is dblClick() and tripleClick() also available, For mouse movement there is .hover() and .unhover() which can be used to test tooltip or appearance and disappearance of styles on the element. 
+
+Apart from convenience API we can also use low level pointer API like ::
+
+ (a). user.pointer({ keys: "[MouseLeft]", target: button }) => Stimulate the left mouse button click on the button element 
+
+ (b). user.pointer({ keys: "[MouseLeft][MouseRight]", target: button }) => Stimulate the left mouse click followed by right mouse click on the button element 
+
+ (c). user.pointer({ keys: "[MouseLeft>]", target: button }) => Stimulate the mouse press on the element button without releasing it. 
+
+ (d). user.pointer([{ keys: "[MouseLeft>]", target: source }, { target: dest }]); => Stimulate the drag and drop interaction where the element source is dragged and dropped in element dest 
+
+Unless we have a use case for using the pointer API it is recommended to rely on convenience API as they are much easier to read and write  
+
 

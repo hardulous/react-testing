@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Application from './Components/Application/Application';
 import Skills from './Components/Skills/Skills';
+import Counter from './Components/Counter/Counter';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       </header>
       <Application/>
       <Skills skills={["Next.js","React.js","Node.js","Express","MongoDB"]}/>
+      <Counter/>
     </div>
   );
 }
