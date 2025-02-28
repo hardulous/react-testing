@@ -412,4 +412,4 @@ TO LEARN MORE WATCH VIDEO "https://www.youtube.com/watch?v=424C8ppfzQA&list=PLC3
 
 ######### USER INTERACTIONS ##########
 
-Every application has user interaction EX: mouse onClick and keyboard onChange etc. 
+Every application has user interaction EX: mouse onClick and keyboard onChange etc. The software responds to such interactions. 
