@@ -403,13 +403,75 @@ Although good thing about RTL is whenever there is any error in test case it pro
 For this we have screen.debug() and logRoles()
 
 
-######### TESTING PLAYGROUND ###########
+######### USER INTERACTION ##########
 
-It is a chrome extension that help us find the best queries to select elements when working with RTL. It allow us to inspect elements hierarchy in the DOM and provides suggestions on how to select them while encouraging good testing practice. 
+Every software contains user interaction like onChange, onClick etc. For every such events a code is executed. There should be tests made to ensure interactions are handled correctly in software. 
 
-TO LEARN MORE WATCH VIDEO "https://www.youtube.com/watch?v=424C8ppfzQA&list=PLC3y8-rFHvwirqe1KHFCHJ0RqNuN61SJd&index=34"
+To test user interaction we use library called ""@testing-library/user-event"". It is a companion library for RTL that stimulates user interactions by dispatching the events that would happen if the interaction took place in the browser. It is the recommended way to test user interactions with RTL
+
+Although we will be using "@testing-library/user-event" most of the time but sometime we come across a code-base which uses another utility called "fireEvent" which is a method from RTL used to dispatch DOM events. 
+
+But we should use "user-event" over "fireEvent" because it stimulates the real user interaction more closely compared to fireEvent just used to dispatch user event. EX ::
+
+When user types into a text box, The element has to be focused, then keyboard and input event are fired and the value on the element are manipulated as they type. As we can see for a simple typing interaction many events are fired and this is something "user-event" stimulates closely.
+
+With CRA "@testing-library/user-event" library comes out of the box in package.json. But minor issue is "user-event" is now version > 14 but CRA comes with v-13 so update it using command "npm install @testing-library/user-event@latest"
 
 
-######### USER INTERACTIONS ##########
+######## POINTER INTERACTION #########
 
-Every application has user interaction EX: mouse onClick and keyboard onChange etc. The software responds to such interactions. 
+Any type of user interaction which includes mouse like mouse clicks, right clicks, hover, and dragging etc. Here in Counter.test.tsx the "user.click()" is not a pointer API, It is a convenience API which internally calls the pointer API.
+
+Convenience API is what we use most of time when writing the test cases. Now apart from .click() there is dblClick() and tripleClick() also available, For mouse movement there is .hover() and .unhover() which can be used to test tooltip or appearance and disappearance of styles on the element. 
+
+Apart from convenience API we can also use low level pointer API like ::
+
+ (a). user.pointer({ keys: "[MouseLeft]", target: button }) => Stimulate the left mouse button click on the button element 
+
+ (b). user.pointer({ keys: "[MouseLeft][MouseRight]", target: button }) => Stimulate the left mouse click followed by right mouse click on the button element 
+
+ (c). user.pointer({ keys: "[MouseLeft>]", target: button }) => Stimulate the mouse press on the element button without releasing it. 
+
+ (d). user.pointer([{ keys: "[MouseLeft>]", target: source }, { target: dest }]); => Stimulate the drag and drop interaction where the element source is dragged and dropped in element dest 
+
+Unless we have a use case for using the pointer API it is recommended to rely on convenience API as they are much easier to read and write  
+
+
+########## KEYBOARD INTERACTION ###########
+
+Here it is the user interaction with the app using the keyboard for this "user-events" provide method like ".type(input element, value)" for type event and ".tab()" for stimulating tab press event. Here this .type() and .tab() are not the part of low level api but type() (utility API) and tab() (convenience API).
+
+UTILITY API ::
+
+ (a). clear() => It is used to clear the contents of an input field in test cases. 
+
+ (b). selectOptions() or deselectOptions() => They are used to select or deselect elements in a select drop down or a list box where we can select multiple elements. 
+
+ (c). upload() => It is used to stimulate the user click on input type file and select the file for upload 
+
+Clipboard API ::
+
+ (a). copy() => To copy the current selection
+
+ (b). cut() => To cut the current selection
+
+ (c). paste() => To paste the selected data into the destination 
+
+If none of this api works then we can rely on low-level keyboard API ::
+
+It allows simulating complex keyboard interactions, such as pressing individual keys, holding down keys, and using key combinations like Shift + A.
+
+ (a). user.keyboard("foo") => Stimulate the user press the key f,o,o
+
+ (b). user.keyboard("{Shift>}A{/Shift}") => Stimulate the user press special key like Shift and hold it using > symbol then press letter A and then release the Shift with / symbol 
+
+
+######### PROVIDER ######## 
+
+When testing React components that rely on context providers, Redux stores, or theme providers, you need to wrap them with the required providers inside the test for this we can use options object as a 2n argument in render method which contains wrapper propertry in which we can specify Wrapper component we want to use. 
+
+But to avoid repeation of this specifying wrapper option we can create custom render function that have pre-configured provider for test case 
+
+
+########## CUSTOM HOOKS ##########
+
