@@ -476,3 +476,24 @@ But to avoid repeation of this specifying wrapper option we can create custom re
 ########## CUSTOM HOOKS ##########
 
 
+
+######### MOCKING FUNCTIONS #########
+
+A mock function in Jest is a way to replace a real function with a fake (mocked) implementation during testing. This helps you track calls to the function and control its behavior.
+
+Mock functions are useful when:
+
+ (a). You don’t want to call the real function (e.g., avoiding API calls in tests).
+ (b). You want to check if a function was called and with what arguments.
+ (c). You want to control the return value of a function.
+
+Jest provides jest.fn() and jest.mock() to create mock functions.
+
+Here when comes to mocking HTTP REQUEST like api call in useEffect in which after some point in time ui changes. For this when testing a function that makes an HTTP request, mocking allows us to avoid real API calls while controlling responses. This ensures our tests run faster, reliably, and without hitting external servers.
+
+Real apis are used only for e2e test and not for unit and functional test. We dont have to ensure if server is up and running to test whether the components renders as intended, As the test runs quite often it is not feasible to include real apis as it might charges us based on no of request.
+
+For this all reason we rely on mocking http request package called "MSW (mocks service worker)" which uses service worker api to intercept actual request. 
+
+Install msw by command "npm i msw --save-dev", now inside src folder create another folder called "mocks" and follow the docs "https://mswjs.io/docs/getting-started"
+
