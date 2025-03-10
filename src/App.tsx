@@ -5,6 +5,7 @@ import Skills from "./Components/Skills/Skills";
 import Counter from "./Components/Counter/Counter";
 import Typography from "./Components/ThemeComponent/Typography";
 import { AppProvider } from "./Components/Providers/AppProvider";
+import {CounterTwo} from "./Components/Counter-Two/CounterTwo";
 
 function App() {
   return (
@@ -30,6 +31,11 @@ function App() {
         />
         <Counter />
         <Typography />
+        <CounterTwo
+          count={0}
+          handleDecrement={() => {}}
+          handleIncrement={() => {}}
+        />
       </div>
     </AppProvider>
   );

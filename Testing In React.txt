@@ -475,3 +475,8 @@ But to avoid repeation of this specifying wrapper option we can create custom re
 
 ########## CUSTOM HOOKS ##########
 
+When testing custom hooks in React, We use RTL. This allows us to isolate the hook's behavior and test its logic independently. For this we use method like renderHook(), act() etc to test hook behavious as per user
+
+
+########## MOCKING FUNCTION ############
+

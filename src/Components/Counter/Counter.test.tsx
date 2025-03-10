@@ -34,7 +34,18 @@ describe("Counter", () => {
     expect(countEle).toHaveTextContent("1"); // Testing the assertion that clicking the button correctly updated the state from 0 to 1.
   });
 
-  test("renders a count of 2 after clicking the increment button twice", () => {});
+  test("renders a count of 2 after clicking the increment button twice", async () => {
+    user.setup();
+    render(<Counter />);
+
+    const incBtnEle = screen.getByRole("button", { name: "Increment" });
+
+    for (let i = 0; i < 2; i++) {
+      await user.click(incBtnEle);   // Here instead of calling multiple time just put in loop which will execute 2 times stimulating 2 times click on increment button 
+    }
+
+    expect(screen.getByRole("heading")).toHaveTextContent("2");
+  });
 
   // Testing user keyboard interaction on input type number
   test("renders a count of 10 after clicking the set button", async () => {
@@ -95,14 +106,13 @@ describe("Counter", () => {
       </div>
     );
 
-    const file = new File(["hello"], "hello.png", { type: "image/png" });  // Creating a file to upload
-    const inputEle: any = screen.getByLabelText(/upload file/i);  // Getting the input element to upload file on
-    await user.upload(inputEle, file);  // Stimulating the user upload file on input element
+    const file = new File(["hello"], "hello.png", { type: "image/png" }); // Creating a file to upload
+    const inputEle: any = screen.getByLabelText(/upload file/i); // Getting the input element to upload file on
+    await user.upload(inputEle, file); // Stimulating the user upload file on input element
 
-    expect(inputEle.files).toHaveLength(1);     // Asserting if .files array of input type file contain 1 file
-    expect(inputEle.files[0]).toStrictEqual(file);  // Asserting if uploaded file is same as one that is used for upload  
-    expect(inputEle.files[0].name).toBe("hello.png");  // Asserting if uploaded file has a name as the one use for upload 
-    
+    expect(inputEle.files).toHaveLength(1); // Asserting if .files array of input type file contain 1 file
+    expect(inputEle.files[0]).toStrictEqual(file); // Asserting if uploaded file is same as one that is used for upload
+    expect(inputEle.files[0].name).toBe("hello.png"); // Asserting if uploaded file has a name as the one use for upload
   });
 });
 
@@ -120,4 +130,4 @@ describe("Counter", () => {
 
 // Here sometime when using RTl with typescript the element we get using the query methof of screen object sometimes does not contain properties which they actually have like "selected", "files" etc. So in this case use type as "any" to avoid compile time ts error
 
-// 
+//
